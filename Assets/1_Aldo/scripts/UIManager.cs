@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-       /* if (SaveManager.HasHighScore(SceneManager.GetActiveScene().buildIndex))
+       /*if (SaveManager.HasHighScore(SceneManager.GetActiveScene().buildIndex))
         {
             txtHighScore.gameObject.SetActive(true);
             txtHighScore.text = "HS: "+ SaveManager.LoadHighScore(SceneManager.GetActiveScene().buildIndex).ToString("0.##");

@@ -11,6 +11,12 @@ public class BossRun : MonoBehaviour
     public float speed;
     public float HP = 10;
     public Slider Life;
+    [Header("TeacherThrower")]
+    public GameObject Projectile;
+    public float nextShot;
+    public Transform parent;
+    public float fireRate;
+    public IEnumerator ieInstatiate;
 
     [Header("Raycast")]
     public float offset;
@@ -25,6 +31,35 @@ public class BossRun : MonoBehaviour
     public Vector2 startingPoint;
     public CheckpointManager checkManager;
     // Start is called before the first frame update
+
+
+    void OnEnable()
+    {
+        InvokeRepeating("InstatiateFireball", fireRate, nextShot);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke();
+        StopAllCoroutines();
+    }
+
+    IEnumerator IEInstatiateFireballs(float _nextshot)
+    {
+        yield return new WaitForSeconds(_nextshot);
+        InstatiateFireball();
+        StartCoroutine(IEInstatiateFireballs(_nextshot));
+    }
+
+    void InstatiateFireball()
+    {
+        GameObject go = Instantiate(Projectile, parent);
+        go.transform.rotation = Quaternion.identity;
+        go.transform.localPosition = Vector3.zero;
+        go.GetComponent<Fireball>().speedMovement *= (Random.Range(0, 2) * 2) - 1;
+        go.GetComponent<Fireball>().SetUp();
+    }
+
     void Start()
     {
         startingPoint = transform.position;
